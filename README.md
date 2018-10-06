@@ -1,8 +1,30 @@
-# PlasticSCM Docker image
+# PlasticSCM Docker tooling
 
+## Using Docker Compose
+To build:
+```
+docker-compose -f docker-compose.yaml build plastic
+```
+To run:
+```
+docker-compose -f docker-compose.yaml up -d plastic
+```
+
+To add a user: `PLASTIC, PLEASE UPDATE, I DON'T KNOW THIS`
+
+To refresh the server: `PLASTIC, PLEASE UPDATE, I DON'T KNOW THIS`
+
+
+#### The next three instructions assume you are looking at directory in which you cloned this repository.
+* To upload a new license file: replace the file named `plasticd.lic` in the `data/conf` directory
+* To backup the databases: copy the files from the `data/sqlite` directory
+* To retrieve logs: copy the files from the `data/logs` directory
+
+
+## Classic mode
 To build:
 
-    docker build --rm=true -t <image_name> plastic
+    docker build --rm=true -t <image_name> plastic -f Dockerfile.14
 
 To run:
 
