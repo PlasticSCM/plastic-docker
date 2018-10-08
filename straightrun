@@ -1,0 +1,5 @@
+#! /bin/bash
+
+docker run -it -v `pwd`/data/conf:/conf \
+               -v `pwd`/data/sqlite:/db/sqlite \
+               -v `pwd`/data/logs:/logs plasticdocker_plastic $@

@@ -1,0 +1,40 @@
+FROM ubuntu:bionic
+
+LABEL maintainer="Miguel González <mgonzalez@codicefactory.com>"
+LABEL contributor="cybik"
+
+RUN apt-get update && \
+    apt-get install -y wget
+
+RUN mkdir -p /conf && \
+    mkdir -p /logs && \
+    mkdir -p /confbase && \
+    mkdir -p /db/sqlite
+
+RUN apt-get install -y gnupg2 && \
+    echo "deb https://www.plasticscm.com/plasticrepo/stable/ubuntu/ ./" >> /etc/apt/sources.list.d/plastic.list && \
+    wget -q   https://www.plasticscm.com/plasticrepo/stable/ubuntu/Release.key -O - | apt-key add -
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get -q update && apt-get install -y plasticscm-server-core && plasticsd stop
+ADD entry.sh /entry.sh
+
+ADD loader.log.conf /confbase
+ADD db.conf /confbase
+
+RUN { \
+    clconfigureserver --language=en --port=8087 --workingmode=UPWorkingMode; \
+    [ -f /opt/plasticscm5/server/users.conf ] && mv /opt/plasticscm5/server/users.conf /confbase   || touch /confbase/users.conf; \
+    [ -f /opt/plasticscm5/server/groups.conf ] && mv /opt/plasticscm5/server/groups.conf /confbase || touch /confbase/groups.conf; \
+    mv /opt/plasticscm5/server/plasticd.lic /confbase; \
+    chmod 755 /entry.sh; \
+}
+
+EXPOSE 7178
+EXPOSE 8087
+
+VOLUME /conf
+VOLUME /db/sqlite
+VOLUME /logs
+
+ENTRYPOINT "/entry.sh"
+CMD ["/opt/plasticscm5/server/plasticd", "--daemon"]

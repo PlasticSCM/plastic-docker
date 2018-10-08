@@ -1,0 +1,40 @@
+version: '3.4'
+services:
+  plastic:
+    #image: plasticscm/server
+    build:
+        context: ./plastic
+        dockerfile: Dockerfile.18
+    volumes:
+        - ./data/conf:/conf
+        - ./data/sqlite:/db/sqlite
+        - ./data/logs:/logs
+    ports:
+      - "7178:7178/tcp" # Dashboard?
+      - "8087:8087/tcp" # Classic
+      - "8088:8088/tcp" # SSL
+    #stdin_open: true
+    #tty: true
+    entrypoint: /entry.sh
+    command:    /opt/plasticscm5/server/plasticd --daemon
+
+  plasticlabs:
+    #image: plasticscm/server
+    build:
+        context: ./plastic
+        dockerfile: Dockerfile.labs.18
+    volumes:
+        - ./data/conf:/conf
+        - ./data/sqlite:/db/sqlite
+        - ./data/logs:/logs
+    ports:
+      - "7178:7178/tcp" # Dashboard?
+      - "8087:8087/tcp" # Classic
+      - "8088:8088/tcp" # SSL
+    #stdin_open: true
+    #tty: true
+    entrypoint: /entry.sh
+    command:    /opt/plasticscm5/server/plasticd --daemon
+
+networks:
+  default:
