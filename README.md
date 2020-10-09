@@ -1,5 +1,7 @@
 # PlasticSCM Docker image
 
+⚠ **Warning!** ⚠ **This Docker image is now obsolete. We don't recommend using it in your deployments.** You can take the Dockerfile as a reference to build your own, but it's really out of date at the moment. We apologize for the inconveniences.
+
 To build:
 
     docker build --rm=true -t <image_name> plastic
